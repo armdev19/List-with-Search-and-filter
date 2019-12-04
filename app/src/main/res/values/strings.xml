@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">List with Search and filter</string>
+    <string name="login_welcome_text">List with Search and filter app</string>
+    <string name="login_btn_text">Log In</string>
 </resources>
