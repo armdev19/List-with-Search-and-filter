@@ -2,6 +2,9 @@ package com.infernal93.listwithsearchandfilter.presenters
 
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import com.infernal93.listwithsearchandfilter.R
+import com.infernal93.listwithsearchandfilter.models.CategoryModel
+import com.infernal93.listwithsearchandfilter.providers.CategoryProvider
 import com.infernal93.listwithsearchandfilter.views.CategoryView
 
 /**
@@ -10,4 +13,19 @@ import com.infernal93.listwithsearchandfilter.views.CategoryView
 
 @InjectViewState
 class CategoryPresenter: MvpPresenter<CategoryView>() {
+
+    fun loadCategory() {
+        viewState.startLoading()
+        CategoryProvider(presenter = this).testLoadCategory(hasCategory = true)
+    }
+
+    fun categoryLoaded(categoryList: ArrayList<CategoryModel>) {
+        viewState.endLoading()
+        if (categoryList.size == 0) {
+            viewState.setupEmptyList()
+            viewState.showError(textResource = R.string.category_no_items_error)
+        } else {
+            viewState.setupCategoryList(categoryList = categoryList)
+        }
+    }
 }

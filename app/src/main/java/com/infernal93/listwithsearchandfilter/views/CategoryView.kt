@@ -3,6 +3,7 @@ package com.infernal93.listwithsearchandfilter.views
 import com.arellomobile.mvp.MvpView
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
+import com.infernal93.listwithsearchandfilter.models.CategoryModel
 
 /**
  * Created by Armen Mkhitaryan on 04.12.2019.
@@ -10,4 +11,10 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(value = AddToEndSingleStrategy::class)
 interface CategoryView: MvpView {
+
+    fun showError(textResource: Int)
+    fun setupEmptyList()
+    fun setupCategoryList(categoryList: ArrayList<CategoryModel>)
+    fun startLoading()
+    fun endLoading()
 }

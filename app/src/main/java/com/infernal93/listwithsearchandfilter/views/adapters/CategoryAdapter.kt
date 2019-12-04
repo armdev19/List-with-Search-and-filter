@@ -1,11 +1,15 @@
 package com.infernal93.listwithsearchandfilter.views.adapters
 
 import android.view.LayoutInflater
+import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.infernal93.listwithsearchandfilter.R
 import com.infernal93.listwithsearchandfilter.models.CategoryModel
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 
 /**
  * Created by Armen Mkhitaryan on 04.12.2019.
@@ -13,6 +17,32 @@ import com.infernal93.listwithsearchandfilter.models.CategoryModel
 class CategoryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var mCategoryList: ArrayList<CategoryModel> = ArrayList()
+    var mSourceList: ArrayList<CategoryModel> = ArrayList()
+
+    fun setupCategory(categoryList: ArrayList<CategoryModel>) {
+//        mCategoryList.clear()
+//        mCategoryList.addAll(categoryList)
+        mSourceList.clear()
+        mSourceList.addAll(categoryList)
+        filter(query = "")
+//        notifyDataSetChanged()
+    }
+
+    fun filter(query: String) {
+        mCategoryList.clear()
+        mSourceList.forEach {
+            if (it.name.contains(query, ignoreCase = true)) {
+                mCategoryList.add(it)
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is CategoryViewHolder) {
+            holder.bind(categoryModel = mCategoryList[position])
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -25,11 +55,20 @@ class CategoryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return mCategoryList.count()
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
-    }
-
     class CategoryViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
+        private var mCategoryIcon: CircleImageView = itemView.findViewById(R.id.category_icon)
+        private var mCategoryName: TextView = itemView.findViewById(R.id.category_name)
+        private var mCategoryPrice: TextView = itemView.findViewById(R.id.category_price)
+
+        fun bind(categoryModel: CategoryModel) {
+            categoryModel.icon?.let { url ->
+                Picasso.with(itemView.context).load(url)
+                    .into(mCategoryIcon)
+            }
+
+            mCategoryName.text = categoryModel.name
+            mCategoryPrice.text = categoryModel.price.toString()
+        }
     }
 }
