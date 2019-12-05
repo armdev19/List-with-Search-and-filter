@@ -7,4 +7,8 @@
     <string name="login_error">Login data is incorrect</string>
     <string name="btn_filter_text">Filter</string>
     <string name="btn_sort_text">Sort</string>
+    <string name="alert_dialog_title">Sorted list</string>
+    <string name="alert_dialog_message">To sort the list by:</string>
+    <string name="alert_dialog_first_button">By Name</string>
+    <string name="alert_dialog_second_button">By Price</string>
 </resources>

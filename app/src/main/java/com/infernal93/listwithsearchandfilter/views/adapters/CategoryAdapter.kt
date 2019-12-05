@@ -49,6 +49,10 @@ class CategoryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun filter() {
+
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is CategoryViewHolder) {
             holder.bind(categoryModel = mCategoryList[position])

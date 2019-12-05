@@ -1,5 +1,6 @@
 package com.infernal93.listwithsearchandfilter.views.activities
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
@@ -18,30 +19,38 @@ import com.infernal93.listwithsearchandfilter.views.adapters.CategoryAdapter
 import kotlinx.android.synthetic.main.activity_category.*
 
 class CategoryActivity : MvpAppCompatActivity(), CategoryView {
+    private val TAG = "CategoryActivity"
 
     @InjectPresenter
     lateinit var categoryPresenter: CategoryPresenter
 
     private lateinit var mAdapter: CategoryAdapter
 
+    @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
 
+        // Filter list
+        btn_filter.setOnClickListener {
+
+        }
+
+        // Sort list
         btn_sort.setOnClickListener {
             val builder = AlertDialog.Builder(this@CategoryActivity)
-            builder.setTitle("Sorted category")
-            builder.setMessage("Sorted by:")
-            builder.setPositiveButton("By name") {dialogInterface, i ->
+            builder.setTitle(R.string.alert_dialog_title)
+            builder.setMessage(R.string.alert_dialog_message)
+            builder.setPositiveButton(R.string.alert_dialog_first_button) {dialogInterface, i ->
                 mAdapter.sortByName()
             }
 
-            builder.setNegativeButton("By price") {dialogInterface, i ->
+            builder.setNegativeButton(R.string.alert_dialog_second_button) {dialogInterface, i ->
                 mAdapter.sortByPrice()
             }
             builder.show()
         }
-
+        // Search
         txt_category_search.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {
 

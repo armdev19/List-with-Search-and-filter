@@ -13,6 +13,7 @@ import com.infernal93.listwithsearchandfilter.views.LoginView
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : MvpAppCompatActivity(), LoginView {
+    private val TAG = "LoginActivity"
 
     @InjectPresenter
     lateinit var loginPresenter: LoginPresenter
