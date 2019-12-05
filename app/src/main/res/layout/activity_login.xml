@@ -20,7 +20,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/login_welcome_text"/>
+            android:textAlignment="center"
+            android:text="@string/login_welcome_text"
+            android:textSize="16sp"/>
 
         <Button
             android:id="@+id/btn_login_enter"

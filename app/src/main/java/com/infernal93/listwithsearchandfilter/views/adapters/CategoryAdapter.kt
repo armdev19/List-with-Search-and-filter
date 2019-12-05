@@ -1,7 +1,6 @@
 package com.infernal93.listwithsearchandfilter.views.adapters
 
 import android.view.LayoutInflater
-import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -10,6 +9,8 @@ import com.infernal93.listwithsearchandfilter.R
 import com.infernal93.listwithsearchandfilter.models.CategoryModel
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by Armen Mkhitaryan on 04.12.2019.
@@ -24,17 +25,27 @@ class CategoryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 //        mCategoryList.addAll(categoryList)
         mSourceList.clear()
         mSourceList.addAll(categoryList)
-        filter(query = "")
+        search(query = "")
 //        notifyDataSetChanged()
     }
 
-    fun filter(query: String) {
+    fun search(query: String) {
         mCategoryList.clear()
         mSourceList.forEach {
             if (it.name.contains(query, ignoreCase = true)) {
                 mCategoryList.add(it)
             }
         }
+        notifyDataSetChanged()
+    }
+
+    fun sortByName() {
+        mCategoryList.sortBy { it.name }
+        notifyDataSetChanged()
+    }
+
+    fun sortByPrice() {
+        mCategoryList.sortBy { it.price }
         notifyDataSetChanged()
     }
 
@@ -60,6 +71,7 @@ class CategoryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private var mCategoryIcon: CircleImageView = itemView.findViewById(R.id.category_icon)
         private var mCategoryName: TextView = itemView.findViewById(R.id.category_name)
         private var mCategoryPrice: TextView = itemView.findViewById(R.id.category_price)
+        private var mCategoryType: TextView = itemView.findViewById(R.id.category_type)
 
         fun bind(categoryModel: CategoryModel) {
             categoryModel.icon?.let { url ->
@@ -69,6 +81,8 @@ class CategoryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             mCategoryName.text = categoryModel.name
             mCategoryPrice.text = categoryModel.price.toString()
+            mCategoryType.text = categoryModel.category
+
         }
     }
 }

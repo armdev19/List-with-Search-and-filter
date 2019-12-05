@@ -1,5 +1,7 @@
 package com.infernal93.listwithsearchandfilter.views.activities
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -26,6 +28,20 @@ class CategoryActivity : MvpAppCompatActivity(), CategoryView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
 
+        btn_sort.setOnClickListener {
+            val builder = AlertDialog.Builder(this@CategoryActivity)
+            builder.setTitle("Sorted category")
+            builder.setMessage("Sorted by:")
+            builder.setPositiveButton("By name") {dialogInterface, i ->
+                mAdapter.sortByName()
+            }
+
+            builder.setNegativeButton("By price") {dialogInterface, i ->
+                mAdapter.sortByPrice()
+            }
+            builder.show()
+        }
+
         txt_category_search.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {
 
@@ -36,7 +52,7 @@ class CategoryActivity : MvpAppCompatActivity(), CategoryView {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                mAdapter.filter(s.toString())
+                mAdapter.search(s.toString())
             }
 
         })
@@ -55,11 +71,15 @@ class CategoryActivity : MvpAppCompatActivity(), CategoryView {
 
     override fun setupEmptyList() {
         recycler_category.visibility = View.GONE
+        btn_filter.visibility = View.GONE
+        btn_sort.visibility = View.GONE
         txt_category_no_items.visibility = View.VISIBLE
     }
 
     override fun setupCategoryList(categoryList: ArrayList<CategoryModel>) {
         recycler_category.visibility = View.VISIBLE
+        btn_filter.visibility = View.VISIBLE
+        btn_sort.visibility = View.VISIBLE
         txt_category_no_items.visibility = View.GONE
 
         mAdapter.setupCategory(categoryList = categoryList)
@@ -68,6 +88,8 @@ class CategoryActivity : MvpAppCompatActivity(), CategoryView {
     override fun startLoading() {
         recycler_category.visibility = View.GONE
         txt_category_no_items.visibility = View.GONE
+        btn_filter.visibility = View.GONE
+        btn_sort.visibility = View.GONE
         cpv_category.visibility = View.VISIBLE
     }
 
