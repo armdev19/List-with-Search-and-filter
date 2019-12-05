@@ -48,6 +48,12 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     // Picasso
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    // okHttp
+    implementation 'com.squareup.okhttp3:okhttp:4.0.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0'
     // GSON
     implementation 'com.google.code.gson:gson:2.8.5'
 }
