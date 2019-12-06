@@ -6,10 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.infernal93.listwithsearchandfilter.R
-import com.infernal93.listwithsearchandfilter.models.CategoryModel
+import com.infernal93.listwithsearchandfilter.models.Category
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import java.util.*
 import kotlin.collections.ArrayList
 
 /**
@@ -17,10 +16,10 @@ import kotlin.collections.ArrayList
  */
 class CategoryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var mCategoryList: ArrayList<CategoryModel> = ArrayList()
-    var mSourceList: ArrayList<CategoryModel> = ArrayList()
+    var mCategoryList: ArrayList<Category> = ArrayList()
+    var mSourceList: ArrayList<Category> = ArrayList()
 
-    fun setupCategory(categoryList: ArrayList<CategoryModel>) {
+    fun setupCategory(categoryList: ArrayList<Category>) {
 //        mCategoryList.clear()
 //        mCategoryList.addAll(categoryList)
         mSourceList.clear()
@@ -77,7 +76,7 @@ class CategoryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private var mCategoryPrice: TextView = itemView.findViewById(R.id.category_price)
         private var mCategoryType: TextView = itemView.findViewById(R.id.category_type)
 
-        fun bind(categoryModel: CategoryModel) {
+        fun bind(categoryModel: Category) {
             categoryModel.icon?.let { url ->
                 Picasso.with(itemView.context).load(url)
                     .into(mCategoryIcon)

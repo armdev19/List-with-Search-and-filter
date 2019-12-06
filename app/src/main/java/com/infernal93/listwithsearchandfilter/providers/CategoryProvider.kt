@@ -1,14 +1,32 @@
 package com.infernal93.listwithsearchandfilter.providers
 
 import android.os.Handler
-import com.infernal93.listwithsearchandfilter.R
+import android.util.Log
+import androidx.constraintlayout.widget.Constraints.TAG
+import com.google.gson.JsonParser
+import com.infernal93.listwithsearchandfilter.models.Category
+import com.infernal93.listwithsearchandfilter.models.CategoryApi
 import com.infernal93.listwithsearchandfilter.models.CategoryModel
 import com.infernal93.listwithsearchandfilter.presenters.CategoryPresenter
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
+
 
 /**
  * Created by Armen Mkhitaryan on 04.12.2019.
  */
 class CategoryProvider(var presenter: CategoryPresenter) {
+
+    companion object {
+        const val KEY = "5de979d34658275ac9dc2375"
+    }
 
     fun testLoadCategory(hasCategory: Boolean) {
         Handler().postDelayed({
@@ -31,7 +49,67 @@ class CategoryProvider(var presenter: CategoryPresenter) {
 
             }
 
-            presenter.categoryLoaded(categoryList = categoryList)
+            //presenter.categoryLoaded(categoryList = categoryList)
         }, 2000)
+    }
+
+    fun loadCategory() {
+        fun createOkHttpClient(): OkHttpClient? {
+            val httpClient = OkHttpClient.Builder()
+            httpClient.addInterceptor(object : Interceptor {
+                @Throws(IOException::class)
+                override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+                    val original = chain.request()
+                    val originalHttpUrl = original.url
+                    val url = originalHttpUrl.newBuilder()
+                        .addQueryParameter("apikey", KEY)
+                        .build()
+                    val requestBuilder = original.newBuilder()
+                        .url(url)
+                    val request = requestBuilder.build()
+                    return chain.proceed(request)
+                }
+            })
+            // logging interceptor
+            val logging = HttpLoggingInterceptor()
+            logging.level = HttpLoggingInterceptor.Level.BODY
+            httpClient.addInterceptor(logging)
+            return httpClient.build()
+
+        }
+
+        var retrofit = Retrofit.Builder()
+            .baseUrl("https://testcategory-d6d7.restdb.io/rest/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(createOkHttpClient())
+            .build()
+
+        val api = retrofit.create(CategoryApi::class.java)
+        api.fetchAllCategory().enqueue(object : Callback<List<Category>> {
+            override fun onFailure(call: Call<List<Category>>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
+                //Log.d(TAG, "onResponse: ${response.body()!![0].name}")
+
+                val category: List<Category> = response.body()!!
+
+                //val category: ArrayList<Category> = response.body()!!
+               // val jsonParser = JsonParser()
+               // val parsedJson = jsonParser.parse(response.toString()).asJsonObject
+//                val categoryList: ArrayList<Category> = ArrayList()
+//                response.body()!!.forEach{
+//                    val category = Category(
+//                        name = response.body()!![call].name,
+//                        icon = it.asJsonObject.get("icon").asString,
+//                        category = it.asJsonObject.get("category").asString,
+//                        price = it.asJsonObject.get("price").asInt)
+//                    categoryList.add(category)
+
+                presenter.categoryLoaded(categoryList = category as ArrayList<Category>)
+
+            }
+        })
     }
 }
