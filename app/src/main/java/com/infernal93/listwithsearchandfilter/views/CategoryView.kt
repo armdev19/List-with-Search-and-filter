@@ -4,7 +4,6 @@ import com.arellomobile.mvp.MvpView
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.infernal93.listwithsearchandfilter.models.Category
-import com.infernal93.listwithsearchandfilter.models.CategoryModel
 
 /**
  * Created by Armen Mkhitaryan on 04.12.2019.

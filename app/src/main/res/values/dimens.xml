@@ -6,4 +6,5 @@
     <dimen name="cpv_size">40dp</dimen>
     <dimen name="icon_size">40dp</dimen>
     <dimen name="cell_category_margin">10dp</dimen>
+    <dimen name="search_size">50dp</dimen>
 </resources>

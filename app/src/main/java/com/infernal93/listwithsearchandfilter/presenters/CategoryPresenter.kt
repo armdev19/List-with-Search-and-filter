@@ -4,7 +4,6 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.infernal93.listwithsearchandfilter.R
 import com.infernal93.listwithsearchandfilter.models.Category
-import com.infernal93.listwithsearchandfilter.models.CategoryModel
 import com.infernal93.listwithsearchandfilter.providers.CategoryProvider
 import com.infernal93.listwithsearchandfilter.views.CategoryView
 

@@ -20,12 +20,9 @@ class CategoryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var mSourceList: ArrayList<Category> = ArrayList()
 
     fun setupCategory(categoryList: ArrayList<Category>) {
-//        mCategoryList.clear()
-//        mCategoryList.addAll(categoryList)
         mSourceList.clear()
         mSourceList.addAll(categoryList)
         search(query = "")
-//        notifyDataSetChanged()
     }
 
     fun search(query: String) {

@@ -1,12 +1,9 @@
 package com.infernal93.listwithsearchandfilter.providers
 
 import android.os.Handler
-import android.util.Log
-import androidx.constraintlayout.widget.Constraints.TAG
-import com.google.gson.JsonParser
 import com.infernal93.listwithsearchandfilter.models.Category
 import com.infernal93.listwithsearchandfilter.models.CategoryApi
-import com.infernal93.listwithsearchandfilter.models.CategoryModel
+import com.infernal93.listwithsearchandfilter.models.CategoryTest
 import com.infernal93.listwithsearchandfilter.presenters.CategoryPresenter
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -17,7 +14,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
-
 
 /**
  * Created by Armen Mkhitaryan on 04.12.2019.
@@ -30,14 +26,14 @@ class CategoryProvider(var presenter: CategoryPresenter) {
 
     fun testLoadCategory(hasCategory: Boolean) {
         Handler().postDelayed({
-            val categoryList: ArrayList<CategoryModel> = ArrayList()
+            val categoryList: ArrayList<CategoryTest> = ArrayList()
             if (hasCategory) {
-                val category1 = CategoryModel(name = "Books", icon = "https://cdn.icon-icons.com/icons2/405/PNG/512/Books_40673.png", category = "Books", price = 2965)
-                val category2 = CategoryModel(name = "Sporting Goods", icon = "https://cdn.icon-icons.com/icons2/716/PNG/512/Goal_icon-icons.com_62267.png", category = "Sporting Goods", price = 999)
-                val category3 = CategoryModel(name = "Music", icon = "https://cdn.icon-icons.com/icons2/279/PNG/512/Audicity_30229.png", category = "Music", price = 15)
-                val category4 = CategoryModel(name = "Travel", icon = "https://cdn.icon-icons.com/icons2/1949/PNG/512/free-30-instagram-stories-icons33_122580.png", category = "Travel", price = 0)
-                val category5 = CategoryModel(name = "Electronics", icon = "https://cdn.icon-icons.com/icons2/892/PNG/512/electronics_icon-icons.com_69106.png", category = "Electronics", price = 100)
-                val category6 = CategoryModel(name = "Other", icon = "https://cdn.icon-icons.com/icons2/1154/PNG/512/1486564397-menu-green_81507.png", category = "Other", price = 50)
+                val category1 = CategoryTest(name = "Books", icon = "https://cdn.icon-icons.com/icons2/405/PNG/512/Books_40673.png", category = "Books", price = 2965)
+                val category2 = CategoryTest(name = "Sporting Goods", icon = "https://cdn.icon-icons.com/icons2/716/PNG/512/Goal_icon-icons.com_62267.png", category = "Sporting Goods", price = 999)
+                val category3 = CategoryTest(name = "Music", icon = "https://cdn.icon-icons.com/icons2/279/PNG/512/Audicity_30229.png", category = "Music", price = 15)
+                val category4 = CategoryTest(name = "Travel", icon = "https://cdn.icon-icons.com/icons2/1949/PNG/512/free-30-instagram-stories-icons33_122580.png", category = "Travel", price = 0)
+                val category5 = CategoryTest(name = "Electronics", icon = "https://cdn.icon-icons.com/icons2/892/PNG/512/electronics_icon-icons.com_69106.png", category = "Electronics", price = 100)
+                val category6 = CategoryTest(name = "Other", icon = "https://cdn.icon-icons.com/icons2/1154/PNG/512/1486564397-menu-green_81507.png", category = "Other", price = 50)
 
                 categoryList.add(category1)
                 categoryList.add(category2)
@@ -45,15 +41,13 @@ class CategoryProvider(var presenter: CategoryPresenter) {
                 categoryList.add(category4)
                 categoryList.add(category5)
                 categoryList.add(category6)
-            } else {
-
             }
-
             //presenter.categoryLoaded(categoryList = categoryList)
         }, 2000)
     }
 
     fun loadCategory() {
+        // x-apikey interceptor for restdb API
         fun createOkHttpClient(): OkHttpClient? {
             val httpClient = OkHttpClient.Builder()
             httpClient.addInterceptor(object : Interceptor {
@@ -75,10 +69,9 @@ class CategoryProvider(var presenter: CategoryPresenter) {
             logging.level = HttpLoggingInterceptor.Level.BODY
             httpClient.addInterceptor(logging)
             return httpClient.build()
-
         }
 
-        var retrofit = Retrofit.Builder()
+        val retrofit = Retrofit.Builder()
             .baseUrl("https://testcategory-d6d7.restdb.io/rest/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(createOkHttpClient())
@@ -92,23 +85,8 @@ class CategoryProvider(var presenter: CategoryPresenter) {
 
             override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
                 //Log.d(TAG, "onResponse: ${response.body()!![0].name}")
-
                 val category: List<Category> = response.body()!!
-
-                //val category: ArrayList<Category> = response.body()!!
-               // val jsonParser = JsonParser()
-               // val parsedJson = jsonParser.parse(response.toString()).asJsonObject
-//                val categoryList: ArrayList<Category> = ArrayList()
-//                response.body()!!.forEach{
-//                    val category = Category(
-//                        name = response.body()!![call].name,
-//                        icon = it.asJsonObject.get("icon").asString,
-//                        category = it.asJsonObject.get("category").asString,
-//                        price = it.asJsonObject.get("price").asInt)
-//                    categoryList.add(category)
-
                 presenter.categoryLoaded(categoryList = category as ArrayList<Category>)
-
             }
         })
     }
