@@ -1,7 +1,6 @@
 package com.infernal93.listwithsearchandfilter.views.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -11,8 +10,10 @@ import com.infernal93.listwithsearchandfilter.R
 import com.infernal93.listwithsearchandfilter.presenters.LoginPresenter
 import com.infernal93.listwithsearchandfilter.views.LoginView
 import kotlinx.android.synthetic.main.activity_login.*
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 
-class LoginActivity : MvpAppCompatActivity(), LoginView {
+class LoginActivity : MvpAppCompatActivity(), LoginView, KeyboardVisibilityEventListener {
     private val TAG = "LoginActivity"
 
     @InjectPresenter
@@ -22,8 +23,22 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        // Show email and password
+        btn_registration.setOnClickListener {
+            Toast.makeText(this@LoginActivity, R.string.login_and_password, Toast.LENGTH_LONG).show()
+        }
+
+        // Keyboard visibility
+        KeyboardVisibilityEvent.setEventListener(this, this)
+
+        // Test Log In
+//        btn_login_enter.setOnClickListener {
+//            loginPresenter.loginTest(isSuccess = true)
+//        }
+
+        // Real Log In
         btn_login_enter.setOnClickListener {
-            loginPresenter.login(isSuccess = true)
+            loginPresenter.login(email = login_email.text.toString(), password = login_password.text.toString())
         }
     }
 
@@ -43,5 +58,13 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
 
     override fun openCategory() {
         startActivity(Intent(applicationContext, CategoryActivity::class.java))
+    }
+
+    override fun onVisibilityChanged(isKeyboardOpen: Boolean) {
+        if (isKeyboardOpen) {
+            scroll_view.scrollTo(0, scroll_view.bottom)
+        } else {
+            scroll_view.scrollTo(0, scroll_view.top)
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.infernal93.listwithsearchandfilter.views.activities
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,15 +11,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.google.firebase.auth.FirebaseAuth
 import com.infernal93.listwithsearchandfilter.R
 import com.infernal93.listwithsearchandfilter.models.Category
 import com.infernal93.listwithsearchandfilter.presenters.CategoryPresenter
 import com.infernal93.listwithsearchandfilter.views.CategoryView
 import com.infernal93.listwithsearchandfilter.views.adapters.CategoryAdapter
 import kotlinx.android.synthetic.main.activity_category.*
+import kotlinx.android.synthetic.main.category_toolbar.*
 
 class CategoryActivity : MvpAppCompatActivity(), CategoryView {
     private val TAG = "CategoryActivity"
+    private lateinit var mAuth: FirebaseAuth
 
     @InjectPresenter
     lateinit var categoryPresenter: CategoryPresenter
@@ -29,6 +33,13 @@ class CategoryActivity : MvpAppCompatActivity(), CategoryView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
+
+        mAuth = FirebaseAuth.getInstance()
+
+        // Log out
+        btn_log_out.setOnClickListener {
+            categoryPresenter.logOut()
+        }
 
         // Filter list
         btn_filter.setOnClickListener {
@@ -51,18 +62,13 @@ class CategoryActivity : MvpAppCompatActivity(), CategoryView {
         }
         // Search
         txt_category_search.addTextChangedListener(object: TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
+            override fun afterTextChanged(s: Editable?) {}
 
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 mAdapter.search(s.toString())
             }
-
         })
 
         categoryPresenter.loadCategory()
@@ -71,6 +77,13 @@ class CategoryActivity : MvpAppCompatActivity(), CategoryView {
         recycler_category.adapter = mAdapter
         recycler_category.layoutManager = LinearLayoutManager(applicationContext, OrientationHelper.VERTICAL, false)
         recycler_category.setHasFixedSize(true)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (mAuth.currentUser == null) {
+            sendToLoginActivity()
+        }
     }
 
     override fun showError(textResource: Int) {
@@ -103,5 +116,15 @@ class CategoryActivity : MvpAppCompatActivity(), CategoryView {
 
     override fun endLoading() {
         cpv_category.visibility = View.GONE
+    }
+
+    override fun logOut() {
+        startActivity(Intent(this@CategoryActivity, LoginActivity::class.java))
+        finish()
+    }
+
+    private fun sendToLoginActivity() {
+        startActivity(Intent(this@CategoryActivity, LoginActivity::class.java))
+        finish()
     }
 }

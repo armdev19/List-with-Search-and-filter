@@ -80,7 +80,6 @@ class CategoryProvider(var presenter: CategoryPresenter) {
         val api = retrofit.create(CategoryApi::class.java)
         api.fetchAllCategory().enqueue(object : Callback<List<Category>> {
             override fun onFailure(call: Call<List<Category>>, t: Throwable) {
-
             }
 
             override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {

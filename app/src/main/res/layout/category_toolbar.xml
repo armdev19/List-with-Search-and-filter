@@ -23,7 +23,7 @@
             android:textStyle="bold"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_margin="10dp"
+            android:padding="10dp"
             />
 
         <TextView

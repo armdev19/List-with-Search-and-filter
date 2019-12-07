@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -56,4 +57,10 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0'
     // GSON
     implementation 'com.google.code.gson:gson:2.8.5'
+    // Firebase Auth
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
+    implementation 'com.firebaseui:firebase-ui-auth:5.1.0'
+    // Keyboard visibility
+    implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0'
 }

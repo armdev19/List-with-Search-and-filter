@@ -59,7 +59,6 @@ class CategoryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val layoutInflater = LayoutInflater.from(parent.context)
         val itemView = layoutInflater.inflate(R.layout.cell_category, parent, false)
         return CategoryViewHolder(itemView = itemView)
-
     }
 
     override fun getItemCount(): Int {

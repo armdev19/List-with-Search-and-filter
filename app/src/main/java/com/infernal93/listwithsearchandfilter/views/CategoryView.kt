@@ -17,4 +17,5 @@ interface CategoryView: MvpView {
     fun setupCategoryList(categoryList: ArrayList<Category>)
     fun startLoading()
     fun endLoading()
+    fun logOut()
 }

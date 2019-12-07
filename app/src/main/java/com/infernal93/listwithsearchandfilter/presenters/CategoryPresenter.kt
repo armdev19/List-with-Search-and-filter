@@ -2,6 +2,7 @@ package com.infernal93.listwithsearchandfilter.presenters
 
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import com.google.firebase.auth.FirebaseAuth
 import com.infernal93.listwithsearchandfilter.R
 import com.infernal93.listwithsearchandfilter.models.Category
 import com.infernal93.listwithsearchandfilter.providers.CategoryProvider
@@ -13,6 +14,8 @@ import com.infernal93.listwithsearchandfilter.views.CategoryView
 
 @InjectViewState
 class CategoryPresenter: MvpPresenter<CategoryView>() {
+
+    private lateinit var mAuth: FirebaseAuth
 
     fun loadCategory() {
         viewState.startLoading()
@@ -28,5 +31,11 @@ class CategoryPresenter: MvpPresenter<CategoryView>() {
         } else {
             viewState.setupCategoryList(categoryList = categoryList)
         }
+    }
+
+    fun logOut() {
+        mAuth = FirebaseAuth.getInstance()
+        mAuth.signOut()
+        viewState.logOut()
     }
 }
